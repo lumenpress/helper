@@ -1,0 +1,7 @@
+{
+    "name": "lumenpress/helper",
+    "license": "MIT",
+    "autoload": {
+        "classmap": ["src"]
+    }
+}
