@@ -16,11 +16,17 @@ class Helper
 
     public function __isset($key)
     {
-        if (! isset($this->extension[$key])) {
-            $this->extension[$key] = $this->$key();
+        if (isset($this->extension[$key])) {
+            return true;
         }
 
-        return isset($this->extension[$key]);
+        foreach ($this->prefix as $prefix) {
+            if (is_callable($prefix . $key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __get($key)
@@ -29,9 +35,7 @@ class Helper
             $this->extension[$key] = $this->$key();
         }
 
-        return is_callable($this->extension[$key])
-            ? call_user_func($this->extension[$key])
-            : $this->extension[$key];
+        return $this->extension[$key];
     }
 
     public function __call($key, $args = [])
@@ -47,8 +51,6 @@ class Helper
                 return call_user_func_array($prefix . $key, $args);
             }
         }
-
-        return false;
     }
 
     public static function wrap($prefix, $extension)
