@@ -32,7 +32,7 @@ class Helper
     public function __get($key)
     {
         if (! isset($this->extension[$key])) {
-            $this->extension[$key] = $this->$key();
+            $this->extension[$key] = is_null($value = $this->$key()) ? '' : $value;
         }
 
         return $this->extension[$key];
